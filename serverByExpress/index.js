@@ -1,25 +1,24 @@
-const mongoose=require('mongoose')
 
+const dotenv=require('dotenv')
 const express = require('express')
 
 const app = express()
 
-const DB="mongodb+srv://mernback:mernback@cluster0.jctxuom.mongodb.net/?retryWrites=true&w=majority"
-const connection=async()=>{
-    try {
-        await mongoose.connect(DB)
-        console.log("connected")
-    } catch (error) {
-        console.log(error)
-    }
-    
-}
-connection()
+dotenv.config({path:'./config.env'})
+require("./db/data.js")  
+app.use(express.json())
+
+// const User=require('./model/userSchema.js')
+app.use(require('./route/auth.js'))
+
+
 
 const middleware=(req,res,next)=>{
     console.log("Hello from middleware")
     next();
 }
+
+
 
 
 app.get('/',(req,res)=>{
